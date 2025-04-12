@@ -1,0 +1,28 @@
+{
+  "name": "gaijinhaiku",
+  "version": "1.0.0",
+  "description": "// node-express-psql > Art Poem Community",
+  "main": "db.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "helmet": "^8.1.0",
+    "pg": "^8.14.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+  {
+    "engines": {
+      "node": "20.x"
+    }
+  }
+}
