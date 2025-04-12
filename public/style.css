@@ -21,10 +21,12 @@ header {
   background-color: #333;
   color: #fff;
   line-height: 60px;
-  padding-left: 1rem;
+  padding: 0 1rem;
   font-weight: 300;
   font-family: "Garamond", serif;
-  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   z-index: 999;
 }
 
@@ -34,6 +36,35 @@ header h1 {
   padding: 0;
   font-size: 1.5rem;
 }
+
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+#loggedInUser {
+  font-weight: 300;
+  font-size: 0.9rem;
+}
+
+.logout-button {
+  background-color: #555;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: "Garamond", serif;
+  transition: background 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #777;
+}
+
+
+
 
 /* Footer */
 footer {
