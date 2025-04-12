@@ -3,8 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.getElementById('loginForm');
   const formsSection = document.querySelector('.forms-section');
   const logoutButton = document.getElementById('logoutButton');
+  const postSection = document.getElementById('postSection');
+  const postForm = document.getElementById('postForm');
+  const postsContainer = document.getElementById('postsContainer');
 
-  // Helper: Show message
   const showMessage = (message, isError = false) => {
     let messageContainer = document.getElementById('message');
     if (!messageContainer) {
@@ -16,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     messageContainer.style.color = isError ? 'red' : 'green';
   };
 
-  // Helper: Update header with username
   const updateHeaderUserInfo = (username) => {
     const userInfo = document.getElementById('userInfo');
     const loggedInUser = document.getElementById('loggedInUser');
@@ -26,14 +27,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // On successful login/signup
+  fetchAndDisplayPosts
+
   const onLoginSuccess = (username) => {
     showMessage(`Welcome, ${username}! You are now logged in.`);
     if (formsSection) formsSection.style.display = 'none';
+    if (postSection) postSection.style.display = 'block';
     updateHeaderUserInfo(username);
+    fetchAndDisplayPosts();
   };
 
-  // Signup form submit
   if (signupForm) {
     signupForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -60,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Login form submit
   if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -87,13 +89,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Logout button click
   if (logoutButton) {
     logoutButton.addEventListener('click', async () => {
       try {
         const res = await fetch('/users/logout', { method: 'POST' });
         if (res.ok) {
-          location.reload(); // Reload to reset state
+          location.reload();
         } else {
           showMessage('Logout failed', true);
         }
@@ -103,4 +104,35 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  if (postForm) {
+    postForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(postForm);
+      const title = formData.get('title');
+      const content = formData.get('content');
+
+      try {
+        const res = await fetch('/posts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, content })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showMessage('Haiku posted successfully!');
+          postForm.reset();
+          fetchAndDisplayPosts();
+        } else {
+          showMessage(data.error, true);
+        }
+      } catch (err) {
+        console.error(err);
+        showMessage('Post request failed.', true);
+      }
+    });
+  }
+
+  // Initial fetch of posts (for guests)
+  fetchAndDisplayPosts();
 });

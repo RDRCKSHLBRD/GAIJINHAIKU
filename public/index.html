@@ -13,10 +13,12 @@
       <div id="logoutButton" class="logout-button">Logout</div>
     </div>
   </header>
-  
+
+  <!-- Message container -->
+  <div id="message"></div>
 
   <main>
-    <!-- Background blocks -->
+    <!-- Dynamic poem blocks -->
     <div class="block block1"></div>
     <div class="block block2"></div>
     <div class="block block3"></div>
@@ -26,26 +28,36 @@
     <div class="block block7"></div>
     <div class="block block8"></div>
 
+    <!-- Forms section -->
     <section class="forms-section">
-      <h2>Welcome to Gaijin Haiku</h2>
-      <p>Create your account or log in to share your poems.</p>
+      <h2>Welcome!</h2>
+      <p>This is your art poem community.</p>
 
       <form id="signupForm">
         <h3>Sign Up</h3>
         <input type="text" name="username" placeholder="Username" required />
         <input type="password" name="password" placeholder="Password" required />
-        <button type="submit">Sign Up</button>
+        <button>Sign Up</button>
       </form>
 
       <form id="loginForm">
         <h3>Login</h3>
         <input type="text" name="username" placeholder="Username" required />
         <input type="password" name="password" placeholder="Password" required />
-        <button type="submit">Login</button>
+        <button>Login</button>
       </form>
-
-      <!-- (Optional: we'll add Post creation form and comments after testing account flow) -->
     </section>
+
+    <!-- Post creation form (hidden until login) -->
+    <section id="postSection" class="forms-section" style="display: none;">
+      <h2>Write a Haiku</h2>
+      <form id="postForm">
+        <input type="text" name="title" placeholder="Haiku Title" required />
+        <textarea name="content" placeholder="Your Haiku..." required rows="3" style="width: 100%; padding: 0.75rem; margin-bottom: 1rem; border-radius: 4px; border: 1px solid #ccc;"></textarea>
+        <button>Publish Haiku</button>
+      </form>
+    </section>
+
   </main>
 
   <footer>

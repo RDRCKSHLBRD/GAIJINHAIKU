@@ -7,32 +7,41 @@ const pool = require('../db/db');
 // CREATE a new post (POST /posts)
 router.post('/', async (req, res) => {
   try {
-    // Ensure user is logged in
     if (!req.session.userId) {
       return res.status(401).json({ error: 'Not authenticated' });
     }
-    const userId = req.session.userId;
+
     const { title, content } = req.body;
 
     const result = await pool.query(
       'INSERT INTO posts (user_id, title, content) VALUES ($1, $2, $3) RETURNING *',
-      [userId, title, content]
+      [req.session.userId, title, content]
     );
 
-    res.json({ message: 'Post created', post: result.rows[0] });
+    res.status(201).json({
+      message: 'Post created successfully',
+      post: result.rows[0]
+    });
   } catch (error) {
-    console.error(error);
+    console.error('Error creating post:', error);
     res.status(500).json({ error: 'Error creating post' });
   }
 });
 
 // READ all posts (GET /posts)
+// ✅ Improvement: also return username!
 router.get('/', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM posts ORDER BY created_at DESC');
+    const result = await pool.query(
+      `SELECT posts.*, users.username 
+       FROM posts 
+       JOIN users ON posts.user_id = users.id 
+       ORDER BY posts.created_at DESC`
+    );
+
     res.json(result.rows);
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching posts:', error);
     res.status(500).json({ error: 'Error fetching posts' });
   }
 });
@@ -41,14 +50,22 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await pool.query('SELECT * FROM posts WHERE id = $1', [id]);
+
+    const result = await pool.query(
+      `SELECT posts.*, users.username 
+       FROM posts 
+       JOIN users ON posts.user_id = users.id 
+       WHERE posts.id = $1`,
+      [id]
+    );
 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Post not found' });
     }
+
     res.json(result.rows[0]);
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching post:', error);
     res.status(500).json({ error: 'Error fetching post' });
   }
 });
@@ -59,14 +76,16 @@ router.put('/:id', async (req, res) => {
     if (!req.session.userId) {
       return res.status(401).json({ error: 'Not authenticated' });
     }
+
     const { id } = req.params;
     const { title, content } = req.body;
 
-    // Check ownership
     const postCheck = await pool.query('SELECT * FROM posts WHERE id = $1', [id]);
+
     if (postCheck.rows.length === 0) {
       return res.status(404).json({ error: 'Post not found' });
     }
+
     if (postCheck.rows[0].user_id !== req.session.userId) {
       return res.status(403).json({ error: 'Not authorized to edit this post' });
     }
@@ -76,9 +95,12 @@ router.put('/:id', async (req, res) => {
       [title, content, id]
     );
 
-    res.json({ message: 'Post updated', post: result.rows[0] });
+    res.json({
+      message: 'Post updated successfully',
+      post: result.rows[0]
+    });
   } catch (error) {
-    console.error(error);
+    console.error('Error updating post:', error);
     res.status(500).json({ error: 'Error updating post' });
   }
 });
@@ -89,21 +111,24 @@ router.delete('/:id', async (req, res) => {
     if (!req.session.userId) {
       return res.status(401).json({ error: 'Not authenticated' });
     }
+
     const { id } = req.params;
 
-    // Check ownership
     const postCheck = await pool.query('SELECT * FROM posts WHERE id = $1', [id]);
+
     if (postCheck.rows.length === 0) {
       return res.status(404).json({ error: 'Post not found' });
     }
+
     if (postCheck.rows[0].user_id !== req.session.userId) {
       return res.status(403).json({ error: 'Not authorized to delete this post' });
     }
 
     await pool.query('DELETE FROM posts WHERE id = $1', [id]);
-    res.json({ message: 'Post deleted' });
+
+    res.json({ message: 'Post deleted successfully' });
   } catch (error) {
-    console.error(error);
+    console.error('Error deleting post:', error);
     res.status(500).json({ error: 'Error deleting post' });
   }
 });
