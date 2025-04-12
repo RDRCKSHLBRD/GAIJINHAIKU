@@ -5,17 +5,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const logoutButton = document.getElementById('logoutButton');
   const postSection = document.getElementById('postSection');
   const postForm = document.getElementById('postForm');
-  const postsContainer = document.getElementById('postsContainer');
+  const blocks = document.querySelectorAll('.block');
+  const messageContainer = document.getElementById('message'); // Footer message container ✅
 
   const showMessage = (message, isError = false) => {
-    let messageContainer = document.getElementById('message');
     if (!messageContainer) {
-      messageContainer = document.createElement('div');
-      messageContainer.id = 'message';
-      document.body.prepend(messageContainer);
+      console.error('Message container not found!');
+      return;
     }
     messageContainer.textContent = message;
-    messageContainer.style.color = isError ? 'red' : 'green';
+    messageContainer.style.color = isError ? 'red' : 'white';
   };
 
   const updateHeaderUserInfo = (username) => {
@@ -27,7 +26,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  fetchAndDisplayPosts
+  const fetchAndDisplayPosts = async () => {
+    try {
+      const res = await fetch('/posts');
+      const posts = await res.json();
+
+      // Clear all blocks
+      blocks.forEach(block => block.innerHTML = '');
+
+      if (posts.length === 0) {
+        showMessage('No haikus yet. Be the first to write one!');
+        return;
+      }
+
+      posts.forEach((post, index) => {
+        if (index >= blocks.length) return; // Only use existing blocks
+
+        const block = blocks[index];
+        block.innerHTML = `
+          <div style="padding: 1rem;">
+            <h3>${post.title}</h3>
+            <p>${post.content}</p>
+            <small>by ${post.username} on ${new Date(post.created_at).toLocaleString()}</small>
+          </div>
+        `;
+      });
+    } catch (err) {
+      console.error(err);
+      showMessage('Failed to load posts.', true);
+    }
+  };
 
   const onLoginSuccess = (username) => {
     showMessage(`Welcome, ${username}! You are now logged in.`);
