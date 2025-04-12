@@ -1,8 +1,17 @@
-// main.js
-
 document.addEventListener('DOMContentLoaded', () => {
   const signupForm = document.getElementById('signupForm');
   const loginForm = document.getElementById('loginForm');
+
+  const showMessage = (message, isError = false) => {
+    let messageContainer = document.getElementById('message');
+    if (!messageContainer) {
+      messageContainer = document.createElement('div');
+      messageContainer.id = 'message';
+      document.body.prepend(messageContainer);
+    }
+    messageContainer.textContent = message;
+    messageContainer.style.color = isError ? 'red' : 'green';
+  };
 
   if (signupForm) {
     signupForm.addEventListener('submit', async (e) => {
@@ -19,13 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         const data = await res.json();
         if (res.ok) {
-          alert(`Signup successful for user: ${data.user.username}`);
+          showMessage(`Signup successful! Welcome, ${data.user.username}`);
+          signupForm.reset();
         } else {
-          alert(`Error: ${data.error}`);
+          showMessage(data.error, true);
         }
       } catch (err) {
         console.error(err);
-        alert('Signup request failed.');
+        showMessage('Signup request failed.', true);
       }
     });
   }
@@ -45,13 +55,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         const data = await res.json();
         if (res.ok) {
-          alert(`Login successful! Hello, ${data.user.username}`);
+          showMessage(`Login successful! Welcome back, ${data.user.username}`);
+          loginForm.reset();
         } else {
-          alert(`Error: ${data.error}`);
+          showMessage(data.error, true);
         }
       } catch (err) {
         console.error(err);
-        alert('Login request failed.');
+        showMessage('Login request failed.', true);
       }
     });
   }

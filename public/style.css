@@ -1,131 +1,144 @@
-/* style.css */
-
-/* Reset some default margins/padding */
+/* Base Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* The header is fixed at the top */
+body {
+  font-family: "Garamond", serif;
+  background-color: #fdfdf8;
+  color: #333;
+}
+
+/* Header */
 header {
   position: fixed;
   top: 0;
   left: 0;
-  height: 60px; /* adjust as needed */
+  height: 60px;
   width: 100%;
   background-color: #333;
   color: #fff;
-  text-align: center;
   line-height: 60px;
-  font-family: sans-serif;
-  z-index: 999; /* ensure it stays on top */
+  padding-left: 1rem;
+  font-weight: 300;
+  font-family: "Garamond", serif;
+  text-align: left;
+  z-index: 999;
 }
 
-/* The footer is fixed at the bottom */
+header h1 {
+  font-weight: 300;
+  margin: 0;
+  padding: 0;
+  font-size: 1.5rem;
+}
+
+/* Footer */
 footer {
   position: fixed;
   bottom: 0;
   left: 0;
-  height: 40px; /* adjust as needed */
+  height: 40px;
   width: 100%;
   background-color: #333;
   color: #fff;
-  text-align: center;
   line-height: 40px;
-  font-family: sans-serif;
+  text-align: center;
+  font-family: "Garamond", serif;
+  font-weight: 300;
   z-index: 999;
+  font-size: 0.9rem;
 }
 
-/* The main content area with space for header + footer */
+/* Main Layout */
 main {
   position: relative;
-  margin-top: 60px;  /* same as header's height */
-  margin-bottom: 40px; /* same as footer's height */
+  margin-top: 60px; /* header height */
+  margin-bottom: 40px; /* footer height */
   height: calc(100vh - 100px);
-  overflow: hidden; /* so the absolutely positioned blocks don't scroll away */
-  font-family: sans-serif;
+  overflow: hidden;
   padding: 1rem;
+  font-family: "Garamond", serif;
 }
 
-/* Example block styling from your first JSON array */
+/* Background blocks */
 .block {
   position: absolute;
 }
 
-.block1 {
-  left: 0%;
-  top: 0%;
-  width: 33.3333%;
-  height: 50%;
-  background-color: #FBFBF4;
+.block1 { left: 0%; top: 0%; width: 33.3333%; height: 50%; background-color: #FBFBF4; }
+.block2 { left: 33.3333%; top: 0%; width: 16.6667%; height: 50%; background-color: #d4cfba; }
+.block3 { left: 50%; top: 0%; width: 33.3333%; height: 50%; background-color: #d2d9c6; }
+.block4 { left: 83.3333%; top: 0%; width: 16.6667%; height: 50%; background-color: #d2d9c6; }
+.block5 { left: 0%; top: 50%; width: 33.3333%; height: 25%; background-color: #ffffff; }
+.block6 { left: 0%; top: 75%; width: 33.3333%; height: 25%; background-color: #e6e6cc; }
+.block7 { left: 33.3333%; top: 50%; width: 22.2222%; height: 50%; background-color: #e3e2d9; }
+.block8 { left: 55.5556%; top: 50%; width: 44.4444%; height: 50%; background-color: #e0e0de; }
+
+/* Forms Section */
+.forms-section {
+  position: relative;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 400px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.block2 {
-  left: 33.3333%;
-  top: 0%;
-  width: 16.6667%;
-  height: 50%;
-  background-color: #d4cfba;
-}
-
-.block3 {
-  left: 50%;
-  top: 0%;
-  width: 33.3333%;
-  height: 50%;
-  background-color: #d2d9c6;
-}
-
-.block4 {
-  left: 83.3333%;
-  top: 0%;
-  width: 16.6667%;
-  height: 50%;
-  background-color: #d2d9c6;
-}
-
-.block5 {
-  left: 0%;
-  top: 50%;
-  width: 33.3333%;
-  height: 25%;
-  background-color: #ffffff;
-}
-
-.block6 {
-  left: 0%;
-  top: 75%;
-  width: 33.3333%;
-  height: 25%;
-  background-color: #e6e6cc;
-}
-
-.block7 {
-  left: 33.3333%;
-  top: 50%;
-  width: 22.2222%;
-  height: 50%;
-  background-color: #e3e2d9;
-}
-
-.block8 {
-  left: 55.5556%;
-  top: 50%;
-  width: 44.4444%;
-  height: 50%;
-  background-color: #e0e0de;
-}
-
-/* Some spacing for the forms */
-form {
+.forms-section h2 {
+  text-align: center;
   margin-bottom: 1rem;
+  font-weight: 400;
 }
+
+.forms-section p {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+}
+
+/* Message Styling */
+#message {
+  margin: 1rem auto;
+  padding: 0.75rem;
+  background-color: #f9f9f9;
+  border-left: 4px solid #333;
+  border-radius: 4px;
+  text-align: center;
+  font-family: "Garamond", serif;
+  max-width: 400px;
+}
+
+/* Form Elements */
+form {
+  margin-bottom: 2rem;
+}
+
 form input {
-  display: block;
-  margin-bottom: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: "Garamond", serif;
+  font-size: 1rem;
 }
+
 form button {
-  padding: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
+  font-family: "Garamond", serif;
+  font-size: 1rem;
+}
+
+form button:hover {
+  background: #555;
 }
